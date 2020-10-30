@@ -11,6 +11,7 @@
 		<module>sms</module>
 		<module>zk</module>
 		<module>eos.crypto</module>
+		<module>utils</module>
 	</modules>
 
 	<properties>

@@ -133,7 +133,12 @@ public class ZkUtils extends CuratorUtils {
 	 */
 	public static String getNodeData(String nodePath) throws Exception {
 
-		return new String(getNodeDataBytes(CuratorBuilder.getInstance().getZKClinet(), nodePath));
+		byte[] data = getNodeDataBytes(nodePath);
+		if (data!=null)
+			return new String(data);
+		else
+			return null;
+
 	}
 
 	public static byte[] getNodeDataBytes(String nodePath) throws Exception {
