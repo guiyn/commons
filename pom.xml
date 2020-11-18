@@ -12,6 +12,7 @@
 		<module>zk</module>
 		<module>eos.crypto</module>
 		<module>utils</module>
+		<module>eos.client</module>
 	</modules>
 
 	<properties>
@@ -19,7 +20,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<backup.dir>d:/github</backup.dir>
+		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
 	</properties>
 
 	<dependencies>
