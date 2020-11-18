@@ -1,8 +1,7 @@
 package org.cmcc.ecip.common.utils;
 
 import java.util.List;
-
-
+import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -14,7 +13,7 @@ import com.alibaba.fastjson.JSONPath;
  * @author guiyn
  *
  */
-public class JsonUtil {
+public class JsonUtils {
 
 	/**
 	 * 字符串转JSON对象
@@ -95,4 +94,32 @@ public class JsonUtil {
 	public static boolean contains(JSONObject result, String path) {
 		return JSONPath.contains(result, path);
 	}
+	
+	
+	public static <T> T map2bean(Map<String, ?> map, Class<T> beanType) throws Exception {
+
+		String jsonString = JSON.toJSONString(map);
+		return JSON.parseObject(jsonString, beanType);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, ?> bean2map(Object bean) throws Exception {
+		String jsonStr = JSON.toJSONString(bean);
+		return JSON.parseObject(jsonStr, Map.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String,String> format2map(String strjson) throws Exception {
+		return  JSON.parseObject(strjson, Map.class);
+	}
+
+	public static <T> List<T> listMap2beans(List<Map<String, ?>> list, Class<T> beanType) throws Exception {
+
+		String jsonStr = JSON.toJSONString(list);
+
+		return JSON.parseArray(jsonStr, beanType);
+
+	}
+
 }
