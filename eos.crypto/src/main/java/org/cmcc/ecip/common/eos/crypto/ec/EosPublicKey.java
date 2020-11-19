@@ -48,8 +48,10 @@ public class EosPublicKey implements PublicKey {
 	private final CurveParam mCurveParam;
 	private final byte[] mData;
 
+	private String algorithm = "secp256k1";
+
 	public String getAlgorithm() {
-		return "secp256k1";
+		return algorithm;
 	}
 
 	public String getFormat() {
@@ -84,6 +86,7 @@ public class EosPublicKey implements PublicKey {
 	}
 
 	public EosPublicKey(String base58Str, SecpEnum secp) {
+		algorithm = secp.getName();
 		RefValue<Long> checksumRef = new RefValue<Long>();
 
 		String[] parts = EosEcUtil.safeSplitEosCryptoString(base58Str);
@@ -113,44 +116,25 @@ public class EosPublicKey implements PublicKey {
 	}
 
 	public EosPublicKey(String base58Str) {
-		this(base58Str, SecpEnum.SECP256K1);
 
-//        RefValue<Long> checksumRef = new RefValue<Long>();
-//
-//        String[] parts = EosEcUtil.safeSplitEosCryptoString( base58Str );
-//        if ( base58Str.startsWith(LEGACY_PREFIX) ) {
-//            if ( parts.length == 1 ){
-//                mCurveParam = EcTools.getCurveParam( SecpEnum.SECP256K1.getType());
-//                mData = EosEcUtil.getBytesIfMatchedRipemd160( base58Str.substring( LEGACY_PREFIX.length()), null, checksumRef);
-//            }
-//            else {
-//                throw new IllegalEosPubkeyFormatException( base58Str );
-//            }
-//        }
-//        else {
-//            if ( parts.length < 3 ) {
-//                throw new IllegalEosPubkeyFormatException( base58Str );
-//            }
-//
-//            // [0]: prefix, [1]: curve type, [2]: data
-//            if (!PREFIX.equals( parts[0]) ){
-//                throw new IllegalEosPubkeyFormatException( base58Str );
-//            }
-//
-//            mCurveParam = EosEcUtil.getCurveParamFrom( parts[1]);
-//            mData = EosEcUtil.getBytesIfMatchedRipemd160( parts[2], parts[1], checksumRef);
-//        }
-//
-//        mCheck = checksumRef.data;
+		this(base58Str, SecpEnum.SECP256K1);
 	}
 
 	public byte[] getBytes() {
 		return mData;
 	}
 
+	public ECPublicKey getECPublicKey() throws Exception {
+		return getECPublicKey(algorithm);
+	}
+
 	public ECPublicKey getECPublicKey(SecpEnum type) throws Exception {
+		return getECPublicKey(type.getName());
+	}
+
+	public ECPublicKey getECPublicKey(String type) throws Exception {
 		KeyFactory keyFactory = KeyFactory.getInstance("ECDSA", "BC");
-		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec(type.getName());
+		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec(type);
 		ECPoint point = ecSpec.getCurve().decodePoint(getBytes());
 		ECPublicKeySpec pubSpec = new ECPublicKeySpec(point, ecSpec);
 		return (ECPublicKey) keyFactory.generatePublic(pubSpec);
@@ -158,11 +142,8 @@ public class EosPublicKey implements PublicKey {
 
 	@Override
 	public String toString() {
-
 		boolean isR1 = mCurveParam.isType(SecpEnum.SECP256R1.getType());
-
 		return EosEcUtil.encodeEosCrypto(isR1 ? PREFIX : LEGACY_PREFIX, isR1 ? mCurveParam : null, mData);
-
 	}
 
 	@Override

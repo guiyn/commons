@@ -56,7 +56,8 @@ public class EosPrivateKey implements PrivateKey {
 
 	private static final SecureRandom mSecRandom;
 
-	private  int curveParamType = 1;
+	private int curveParamType = 1;
+	private String algorithm = "secp256k1";
 
 	static {
 		mSecRandom = new SecureRandom();
@@ -78,18 +79,17 @@ public class EosPrivateKey implements PrivateKey {
 		this(1, keyBytes);
 	}
 
-
-
 	public EosPrivateKey(int curveParamType, byte[] keyBytes) {
-		this.curveParamType=curveParamType;
+		this.curveParamType = curveParamType;
 		mCurveParam = EcTools.getCurveParam(curveParamType);
 		mPrivateKey = getOrCreatePrivKeyBigInteger(keyBytes);
 		mPublicKey = new EosPublicKey(findPubKey(mPrivateKey), mCurveParam);
 	}
 
+	public EosPrivateKey(SecpEnum secp, String base58Str) {
+		curveParamType = secp.getType();
+		algorithm = secp.getName();
 
-	public EosPrivateKey( SecpEnum secp,String base58Str) {
-		curveParamType =secp.getType();
 		String[] split = EosEcUtil.safeSplitEosCryptoString(base58Str);
 		byte[] keyBytes;
 
@@ -151,8 +151,18 @@ public class EosPrivateKey implements PrivateKey {
 		return EcDsa.sign(digest, this);
 	}
 
-	public ECPrivateKey getECPrivateKey(SecpEnum type) throws Exception {
-		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec(type.getName());
+	public ECPrivateKey getECPrivateKey() throws Exception {
+
+		return getECPrivateKey(algorithm);
+	}
+
+	public ECPrivateKey getECPrivateKey(SecpEnum secp) throws Exception {
+
+		return getECPrivateKey(secp.getName());
+	}
+
+	public ECPrivateKey getECPrivateKey(String type) throws Exception {
+		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec(type);
 		ECCurve curve = ecSpec.getCurve();
 		EllipticCurve ellipticCurve = EC5Util.convertCurve(curve, ecSpec.getSeed());
 		java.security.spec.ECParameterSpec params2 = EC5Util.convertSpec(ellipticCurve, ecSpec);
@@ -243,7 +253,7 @@ public class EosPrivateKey implements PrivateKey {
 	}
 
 	public String getAlgorithm() {
-		return "sha256x2";
+		return algorithm;
 	}
 
 	public String getFormat() {
