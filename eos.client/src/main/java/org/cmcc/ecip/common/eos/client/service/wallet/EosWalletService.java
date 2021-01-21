@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.cmcc.ecip.common.eos.client.exception.ChainApiException;
 import org.cmcc.ecip.common.eos.client.exception.FeignError;
-import org.cmcc.ecip.common.eos.client.models.common.transaction.PackedTransaction;
-import org.cmcc.ecip.common.eos.client.models.common.transaction.SignedPackedTransaction;
-import org.cmcc.ecip.common.eos.client.models.request.wallet.transaction.SignTransactionRequest;
+import org.cmcc.ecip.common.eos.client.model.common.transaction.PackedTransaction;
+import org.cmcc.ecip.common.eos.client.model.common.transaction.SignedPackedTransaction;
+import org.cmcc.ecip.common.eos.client.model.request.wallet.transaction.SignTransactionRequest;
 import org.cmcc.ecip.common.eos.client.service.feigns.EosWalletApiClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import com.alibaba.fastjson.JSON;
 import feign.FeignException.InternalServerError;
 import feign.RetryableException;
 
-@ConditionalOnProperty(value = "eos.wallet.url", havingValue = "true")
+@ConditionalOnProperty(prefix = "eos.wallet",name = "url", matchIfMissing = true)
 @Service
 public class EosWalletService {
 

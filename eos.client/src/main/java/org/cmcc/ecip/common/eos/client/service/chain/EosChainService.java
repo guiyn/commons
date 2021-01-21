@@ -5,23 +5,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cmcc.ecip.common.eos.client.models.common.transaction.PackedTransaction;
-import org.cmcc.ecip.common.eos.client.models.common.transaction.SignedPackedTransaction;
-import org.cmcc.ecip.common.eos.client.models.request.chain.AbiJsonToBinRequest;
-import org.cmcc.ecip.common.eos.client.models.request.chain.RequiredKeysRequest;
-import org.cmcc.ecip.common.eos.client.models.request.chain.transaction.PushTransactionRequest;
-import org.cmcc.ecip.common.eos.client.models.response.chain.AbiBinToJson;
-import org.cmcc.ecip.common.eos.client.models.response.chain.AbiJsonToBin;
-import org.cmcc.ecip.common.eos.client.models.response.chain.Block;
-import org.cmcc.ecip.common.eos.client.models.response.chain.ChainInfo;
-import org.cmcc.ecip.common.eos.client.models.response.chain.RequiredKeys;
-import org.cmcc.ecip.common.eos.client.models.response.chain.TableRow;
-import org.cmcc.ecip.common.eos.client.models.response.chain.abi.Abi;
-import org.cmcc.ecip.common.eos.client.models.response.chain.account.Account;
-import org.cmcc.ecip.common.eos.client.models.response.chain.code.Code;
-import org.cmcc.ecip.common.eos.client.models.response.chain.currencystats.CurrencyStats;
-import org.cmcc.ecip.common.eos.client.models.response.chain.transaction.PushedTransaction;
-import org.cmcc.ecip.common.eos.client.models.response.chain.transaction.ScheduledTransactionResponse;
+import org.cmcc.ecip.common.eos.client.model.common.transaction.PackedTransaction;
+import org.cmcc.ecip.common.eos.client.model.common.transaction.SignedPackedTransaction;
+import org.cmcc.ecip.common.eos.client.model.request.chain.AbiJsonToBinRequest;
+import org.cmcc.ecip.common.eos.client.model.request.chain.RequiredKeysRequest;
+import org.cmcc.ecip.common.eos.client.model.request.chain.transaction.PushTransactionRequest;
+import org.cmcc.ecip.common.eos.client.model.response.chain.AbiBinToJson;
+import org.cmcc.ecip.common.eos.client.model.response.chain.AbiJsonToBin;
+import org.cmcc.ecip.common.eos.client.model.response.chain.Block;
+import org.cmcc.ecip.common.eos.client.model.response.chain.ChainInfo;
+import org.cmcc.ecip.common.eos.client.model.response.chain.RequiredKeys;
+import org.cmcc.ecip.common.eos.client.model.response.chain.TableRow;
+import org.cmcc.ecip.common.eos.client.model.response.chain.abi.Abi;
+import org.cmcc.ecip.common.eos.client.model.response.chain.account.Account;
+import org.cmcc.ecip.common.eos.client.model.response.chain.code.Code;
+import org.cmcc.ecip.common.eos.client.model.response.chain.currencystats.CurrencyStats;
+import org.cmcc.ecip.common.eos.client.model.response.chain.transaction.PushedTransaction;
+import org.cmcc.ecip.common.eos.client.model.response.chain.transaction.ScheduledTransactionResponse;
 import org.cmcc.ecip.common.eos.client.service.feigns.EosChainApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ import org.springframework.util.StringUtils;
 @Service
 public class EosChainService {
 
-	@Autowired
+	@Autowired()
 	private EosChainApiClient eosChainApiClient;
 
 	public ChainInfo getChainInfo() {

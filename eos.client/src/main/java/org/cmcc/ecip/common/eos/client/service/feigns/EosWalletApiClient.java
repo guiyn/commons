@@ -2,13 +2,13 @@ package org.cmcc.ecip.common.eos.client.service.feigns;
 
 import java.util.List;
 
-import org.cmcc.ecip.common.eos.client.models.common.transaction.SignedPackedTransaction;
+import org.cmcc.ecip.common.eos.client.model.common.transaction.SignedPackedTransaction;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@ConditionalOnProperty(value = "eos.wallet.url", havingValue = "true")
+@ConditionalOnProperty(prefix = "eos.wallet",name = "url", matchIfMissing = true)
 @FeignClient(contextId = "walletcenter", name = "walletcenter", url = "${eos.wallet.url}")
 public interface EosWalletApiClient {
 

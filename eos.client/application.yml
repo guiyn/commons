@@ -1,0 +1,42 @@
+server: 
+   port: 8088
+spring:
+   application:  
+      name: tocken.server
+app:
+   isUse: 
+      swagger: true
+
+######智能合约地址#####
+eos:
+   chain:
+      url: 117.134.46.50:443
+      account: cmpaastokens
+      scope: cmpaastokens
+      actor: cmpaastokens
+      table: tokens
+      permission: default
+   wallet:
+      url: 117.134.46.50:8080
+      name: default
+      pass: PW5KNoYMswWzozFReBbgeXwj4D1nHr9H76WYNfKW2Vtak4fZ5cbg2
+
+ #  level:
+      #root: debu
+     # fegin: debug
+      
+feign:
+   sentinel:
+      enabled: true
+   client:
+      config:
+         default:
+            loggerLevel: FULL
+            readTimeout: 10000
+            connectTimeout: 5000
+            retryer: feign.Retryer.Default
+#        decoder: feign.gson.GsonDecoder
+   okhttp:
+      enabled: true
+#       encoder: feign.gson.GsonEncoder
+      max-connections-per-route: 100
