@@ -13,6 +13,7 @@
 		<module>eos.crypto</module>
 		<module>utils</module>
 		<module>eos.client</module>
+		<module>tw</module>
 	</modules>
 
 	<properties>
@@ -21,16 +22,49 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
+		<slf4j.version>1.7.30</slf4j.version>
 	</properties>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>1.2.75</version>
+			</dependency>
+			<dependency>
+				<groupId>cmcc.ecip.common</groupId>
+				<artifactId>utils</artifactId>
+				<version>0.1-release</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.8.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<finalName>
 			${project.artifactId}-${project.version}_${current.time}
@@ -71,31 +105,12 @@
 				</configuration>
 			</plugin>
 			<!-- 代码已存其他目录准备上传远程git -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<tasks>
-								<copy overwrite="true"
-									todir="${backup.dir}/${groupId}/${artifactId}/">
-									<fileset dir="${basedir}">
-										<include name="src/**" />
-										<include name="**.properties" />
-										<include name="**.xml" />
-										<include name="**.yml" />
-									</fileset>
-								</copy>
-							</tasks>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
+				<executions> <execution> <phase>package</phase> <goals> <goal>run</goal> 
+				</goals> <configuration> <tasks> <copy overwrite="true" todir="${backup.dir}/${groupId}/${artifactId}/"> 
+				<fileset dir="${basedir}"> <include name="src/**" /> <include name="**.properties" 
+				/> <include name="**.xml" /> <include name="**.yml" /> </fileset> </copy> 
+				</tasks> </configuration> </execution> </executions> </plugin> -->
 			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
 				<configuration> <outputDirectory> ${output.path}/spring_boot_jar </outputDirectory> 
 				<mainClass>${main.class}</mainClass> </configuration> <executions> <execution> 

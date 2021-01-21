@@ -7,22 +7,17 @@
 		<artifactId>common</artifactId>
 		<version>0.1-release</version>
 	</parent>
-	<artifactId>zk</artifactId>
-	<properties>
-		<curator.version>4.2.0</curator.version>
-	</properties>
+	<artifactId>tw</artifactId>
 
 	<dependencies>
-
 		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-framework</artifactId>
-			<version>${curator.version}</version>
+			<groupId>cmcc.ecip.R</groupId>
+			<artifactId>cmcctrustwork140</artifactId>
+			<version>1.40</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-recipes</artifactId>
-			<version>${curator.version}</version>
+			<groupId>cmcc.ecip.common</groupId>
+			<artifactId>utils</artifactId>
 		</dependency>
 	</dependencies>
 </project>
