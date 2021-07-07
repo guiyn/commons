@@ -8,6 +8,10 @@ public class Chain {
 	String scope;
 	String actor;
 	long expiration;
+	
+	int connectionTimeout;
+	int socketTimeout;
+	
 	public String getAccount() {
 		return account;
 	}
@@ -49,6 +53,18 @@ public class Chain {
 	}
 	public void setActor(String actor) {
 		this.actor = actor;
+	}
+	public int getConnectionTimeout() {
+		return connectionTimeout;
+	}
+	public void setConnectionTimeout(int connectionTimeout) {
+		this.connectionTimeout = connectionTimeout;
+	}
+	public int getSocketTimeout() {
+		return socketTimeout;
+	}
+	public void setSocketTimeout(int socketTimeout) {
+		this.socketTimeout = socketTimeout;
 	}
 	
 	

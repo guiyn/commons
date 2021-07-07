@@ -31,11 +31,12 @@ import org.cmcc.ecip.common.eos.client.model.response.history.transaction.Transa
 import org.cmcc.ecip.common.eos.client.service.chain.EosChainService;
 import org.cmcc.ecip.common.eos.client.service.wallet.EosWalletService;
 import org.cmcc.ecip.common.eos.client.util.MapBeanExchange;
+import org.cmcc.ecip.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+ 
 
 import com.alibaba.fastjson.JSON;
 
@@ -60,23 +61,21 @@ public class ChainBusinessService {
 
 	public <T> List<T> getAll(Class<T> c) throws ChainApiException {
 
-		return getAll(conf.getChain(), c);
+		return getAll(conf.getChain(), c, conf.getChain().getTable(), 100);
 	}
 
-	public <T> List<T> getAll(Chain chain, Class<T> c) throws ChainApiException {
+	public <T> List<T> getAll(Chain chain, Class<T> c, String table, int limit) throws ChainApiException {
 
-		int i = 100;
 		try {
 			List<Map<String, ?>> list = null;
-			TableRow tr = chainService.getTableRows(chain.getScope(), chain.getAccount(), chain.getTable());
+			TableRow tr = chainService.getTableRows(chain.getScope(), chain.getAccount(), table);
 			list = tr.getRows();
 			while (tr.getMore().booleanValue()) {
 
 				Map<String, ?> m = list.get(list.size() - 1);
 				Object id = m.get("id");
 
-				tr = chainService.getTableRows(chain.getScope(), chain.getAccount(), chain.getTable(),
-						String.valueOf(i), id.toString(), null);
+				tr = chainService.getTableRows(chain.getScope(), chain.getAccount(), table, limit, id.toString(), null);
 				list.addAll(tr.getRows());
 			}
 
@@ -114,23 +113,45 @@ public class ChainBusinessService {
 		}
 	}
 
-	public boolean push(ChainDataObject t, boolean checkBlockData) throws ChainApiException {
+	public boolean push(ChainDataObject t, boolean checkBlockData, String action) throws ChainApiException {
+		AbiJsonToBin data = buildBinData(t, conf.getChain().getAccount(), action);
 		return push(conf.getWallet(), conf.getChain().getAccount(), conf.getChain().getPermission(),
-				conf.getChain().getExpiration(), t, true, checkBlockData);
+				conf.getChain().getExpiration(), true, checkBlockData, action, data);
+	}
+
+	public boolean push(ChainDataObject t, String action) throws ChainApiException {
+		return push(conf.getWallet(), conf.getChain().getAccount(), conf.getChain().getPermission(), t, action);
 	}
 
 	public boolean push(ChainDataObject t) throws ChainApiException {
-		return push(conf.getWallet(), conf.getChain().getAccount(), conf.getChain().getPermission(),
-				conf.getChain().getExpiration(), t, true, true);
+//		AbiJsonToBin data = buildBinData(t, chainAccount, action);
+		return push(conf.getWallet(), conf.getChain().getAccount(), conf.getChain().getPermission(), t, save_action);
 	}
 
-	public boolean push(Wallet wallet, String chainAccount, String permission, ChainDataObject t)
+	public boolean push(Wallet wallet, String chainAccount, String permission, ChainDataObject t, String action)
 			throws ChainApiException {
-		return push(wallet, chainAccount, permission, conf.getChain().getExpiration(), t, true, true);
+		AbiJsonToBin data = buildBinData(t, chainAccount, action);
+		return push(wallet, chainAccount, permission, conf.getChain().getExpiration(), true, true, action, data);
 	}
 
-	public boolean push(Wallet wallet, String chainAccount, String permission, long expiration_time, ChainDataObject t,
-			boolean checkLastBlockNum, boolean checkBlockData) throws ChainApiException {
+	public boolean push(Wallet wallet, String chainAccount, String permission, List<? extends ChainDataObject> t,
+			String action) throws ChainApiException {
+		AbiJsonToBin data = buildBinData(t, chainAccount, action);
+		return push(wallet, chainAccount, permission, conf.getChain().getExpiration(), true, true, action, data);
+	}
+
+	public boolean push(List<? extends ChainDataObject> t, String action) throws ChainApiException {
+		return push(conf.getWallet(), conf.getChain().getAccount(), conf.getChain().getPermission(), t, action);
+	}
+
+	public boolean push(AbiJsonToBin data, String action) throws ChainApiException {
+		return push(conf.getWallet(), conf.getChain().getAccount(), conf.getChain().getPermission(),
+				conf.getChain().getExpiration(), true, true, action, data);
+	}
+
+	public boolean push(Wallet wallet, String chainAccount, String permission, long expiration_time,
+			boolean checkLastBlockNum, boolean checkBlockData, String action, AbiJsonToBin data)
+			throws ChainApiException {
 
 		if (expiration_time < 60) {
 			log.warn("expiration_time has error expiration_time mast greater than 10 .. set expiration_time is 10 ");
@@ -138,9 +159,16 @@ public class ChainBusinessService {
 		}
 		// unlock wallet
 		try {
-			log.debug("wallet unlock..");
-			String result = walletService.unlockWallet(wallet.getName(), wallet.getPass());
-			log.debug("wallet unlock result : " + result);
+			if(!StringUtils.isTrimEmpty(wallet.getPass())) {
+				log.debug("wallet unlock..");
+				String result = walletService.unlockWallet(wallet.getName(), wallet.getPass());
+				log.debug("wallet unlock result : " + result);
+			}
+			else
+			{
+				log.debug("wallet  pass is null .not. unlock");
+			}
+			
 		} catch (Exception e) {
 			log.warn("wallet unlock error : " + e.getMessage());
 		}
@@ -155,12 +183,6 @@ public class ChainBusinessService {
 			throw new ChainApiException("can not find public key " + permission + " ");
 		}
 
-		// build push bin data
-		Map<String, Object> args = new HashMap<>(4);
-		args.put("account", chainAccount);
-		args.put("param", t);
-		AbiJsonToBin data = chainService.abiJsonToBin(chainAccount, save_action, args);
-		log.info("abiJsonToBin >> " + data);
 		// get chain info
 		ChainInfo chainInfo = chainService.getChainInfo();
 
@@ -180,7 +202,7 @@ public class ChainBusinessService {
 		/* Create Transaction Action */
 		TransactionAction transactionAction = new TransactionAction();
 		transactionAction.setAccount(chainAccount);
-		transactionAction.setName(save_action);
+		transactionAction.setName(action);
 		transactionAction.setData(data.getBinargs());
 
 		transactionAction.setAuthorization(Collections.singletonList(transactionAuthorization));
@@ -265,10 +287,77 @@ public class ChainBusinessService {
 					return true;
 
 			} else {
-				log.warn("chain consensus has waring..push transaction result block num is {} ; but current chain block num is {}", result_block_num, c.getLastIrreversibleBlockNum());
+				log.warn(
+						"chain consensus has waring..push transaction result block num is {} ; but current chain block num is {}",
+						result_block_num, c.getLastIrreversibleBlockNum());
 			}
 		}
 		throw new ChainApiException("chain consensus fail..");
+	}
+
+	public AbiJsonToBin buildBinData(ChainDataObject t, String chainAccount, String action) {
+		// build push bin data
+		Map<String, Object> args = new HashMap<>(4);
+		args.put("account", chainAccount);
+		args.put("param", t);
+		AbiJsonToBin data = chainService.abiJsonToBin(chainAccount, action, args);
+		log.info("abiJsonToBin >> " + data);
+		return data;
+	}
+
+	public AbiJsonToBin buildBinData(List<? extends ChainDataObject> list, String chainAccount, String action) {
+		// build push bin data
+		Map<String, Object> args = new HashMap<>(4);
+		args.put("account", chainAccount);
+		args.put("data", list);
+		AbiJsonToBin data = chainService.abiJsonToBin(chainAccount, action, args);
+		log.info("abiJsonToBin >> " + data);
+		return data;
+	}
+	public AbiJsonToBin buildBinDataByMap(List<Map> list, String chainAccount, String action) {
+		// build push bin data
+		Map<String, Object> args = new HashMap<>(4);
+		args.put("account", chainAccount);
+		args.put("data", list);
+		AbiJsonToBin data = chainService.abiJsonToBin(chainAccount, action, args);
+		log.info("abiJsonToBin >> " + data);
+		return data;
+	}
+	
+	public AbiJsonToBin buildBinData(String key, Object o, String chainAccount, String action) {
+		// build push bin data
+		Map<String, Object> args = new HashMap<>(4);
+		args.put("account", chainAccount);
+		args.put(key, o);
+		AbiJsonToBin data = chainService.abiJsonToBin(chainAccount, action, args);
+		log.info("abiJsonToBin >> " + data);
+		return data;
+	}
+
+	public AbiJsonToBin buildBinData(String key, Object o, String action) {
+		// build push bin data
+		Map<String, Object> args = new HashMap<>(4);
+		args.put("account", conf.getChain().getAccount());
+		args.put(key, o);
+		AbiJsonToBin data = chainService.abiJsonToBin(conf.getChain().getAccount(), action, args);
+		log.info("abiJsonToBin >> " + data);
+		return data;
+	}
+
+	public AbiJsonToBin buildBinData(Map<String, Object> args, String chainAccount, String action) {
+
+		args.put("account", chainAccount);
+		AbiJsonToBin data = chainService.abiJsonToBin(chainAccount, action, args);
+		log.info("abiJsonToBin >> " + data);
+		return data;
+	}
+
+	public AbiJsonToBin buildBinData(Map<String, Object> args, String action) {
+
+		args.put("account", conf.getChain().getAccount());
+		AbiJsonToBin data = chainService.abiJsonToBin(conf.getChain().getAccount(), action, args);
+		log.info("abiJsonToBin >> " + data);
+		return data;
 	}
 
 	boolean checkBlockTransactionId(long blockNum, String transactionId) throws ChainApiException {

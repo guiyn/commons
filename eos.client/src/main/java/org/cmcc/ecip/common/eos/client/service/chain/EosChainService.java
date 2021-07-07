@@ -53,8 +53,8 @@ public class EosChainService {
 		return eosChainApiClient.getCode(Collections.singletonMap("account_name", accountName));
 	}
 
-	public TableRow getTableRows(String scope, String code, String table, String lower_bound,
-			String upper_bound, Integer limit, Boolean reverse) {
+	public TableRow getTableRows(String scope, String code, String table, Integer limit, String lower_bound,
+			String upper_bound, Boolean reverse) {
 		LinkedHashMap<String, Object> requestParameters = new LinkedHashMap<>(8);
 		requestParameters.put("scope", scope);
 		requestParameters.put("code", code);
@@ -66,35 +66,35 @@ public class EosChainService {
 			requestParameters.put("lower_bound", lower_bound);
 		if (!StringUtils.isEmpty(upper_bound))
 			requestParameters.put("upper_bound", upper_bound);
-		if (reverse != null) {
+		if (!StringUtils.isEmpty(reverse))
 			requestParameters.put("reverse", reverse);
-		}
 		return eosChainApiClient.getTableRows(requestParameters);
 	}
 
-	public TableRow getTableRows(String scope, String code, String table, String limit , String lower_bound,
+	public TableRow getTableRows(String scope, String code, String table, Integer limit, String lower_bound,
 			String upper_bound) {
-		LinkedHashMap<String, Object> requestParameters = new LinkedHashMap<>(7);
-		requestParameters.put("scope", scope);
-		requestParameters.put("code", code);
-		requestParameters.put("table", table);
-		requestParameters.put("json", "true");
-		if (limit != null)
-			requestParameters.put("limit", limit);
-		if (!StringUtils.isEmpty(lower_bound))
-			requestParameters.put("lower_bound", lower_bound);
-		if (!StringUtils.isEmpty(upper_bound))
-			requestParameters.put("upper_bound", upper_bound);
-		return eosChainApiClient.getTableRows(requestParameters);
+
+		return getTableRows(scope, code, table, limit, lower_bound, upper_bound, null);
+
+	}
+
+	public TableRow getTableRows(String scope, String code, String table) {
+		return getTableRows(scope, code, table, 500, null, null);
+	}
+
+	public TableRow getTableRows(String scope, String code, String table, Integer limit) {
+		return getTableRows(scope, code, table, limit, null, null);
+	}
+
+	public TableRow getTableRows(String scope, String code, String table, Integer limit, String lower_bound) {
+
+		return getTableRows(scope, code, table, limit, lower_bound, null, null);
+
 	}
 	
-	public TableRow getTableRows(String scope, String code, String table) {
-		return getTableRows(scope, code, table, "100", null, null);
-	}
-
 	public Map<String, ?> getTableRow(String scope, String code, String table, String id) {
 
-		List<Map<String, ?>> l = getTableRows(scope, code, table, "1", id, id).getRows();
+		List<Map<String, ?>> l = getTableRows(scope, code, table, 1, id, id).getRows();
 
 		if (l.size() > 0)
 			return l.get(0);

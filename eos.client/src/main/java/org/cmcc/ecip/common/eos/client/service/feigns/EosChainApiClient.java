@@ -49,6 +49,9 @@ public interface EosChainApiClient {
 	@PostMapping("/v1/chain/get_table_rows")
 	TableRow getTableRows(Map<String, Object> requestFields);
 
+	@PostMapping("/v1/chain/get_table_rows")
+	String getTableRowsStr(Map<String, Object> requestFields);
+	
 	@PostMapping("/v1/chain/get_table_by_scope")
 	TableRow getTableByScope(Map<String, String> requestFields);
 
