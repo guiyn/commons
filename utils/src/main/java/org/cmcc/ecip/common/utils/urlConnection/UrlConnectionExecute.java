@@ -42,11 +42,11 @@ public class UrlConnectionExecute {
 					obj.getReqProxy().getProxPort());
 			proxy = new Proxy(Proxy.Type.valueOf(obj.getReqProxy().getProxType()), address); // http 代理
 		}
-		return execute(url, obj.getMethod(), obj.getHeaders(), proxy, obj.getRequestBody());
+		return execute(url, obj.getMethod(), obj.getHeaders(), proxy, obj.getRequestBody(),5000,15000);
 	}
 
 	public static ResponseViewObj execute(String urlStr, String method, Map<String, List<String>> headers, Proxy proxy,
-			String requestBody) throws Exception {
+			String requestBody,int connectiontimeout, int sockettimeout) throws Exception {
 
 		long beginTime = System.currentTimeMillis();
 		if ("GET".equals(method)) {
@@ -60,8 +60,8 @@ public class UrlConnectionExecute {
 		else
 			connection = (HttpURLConnection) url.openConnection();
 
-		connection.setConnectTimeout(5000);
-		connection.setReadTimeout(15000);
+		connection.setConnectTimeout(connectiontimeout);
+		connection.setReadTimeout(sockettimeout);
 
 		connection.setRequestMethod(method);
 		connection.setDoOutput(true);

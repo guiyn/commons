@@ -59,7 +59,10 @@ public class JsonUtils {
 	public static <T> List<T> format2Array(String text, Class<T> clazz) {
 		return JSON.parseArray(text, clazz);
 	}
-
+	
+ 
+	
+	
 	private static String getValue(JSONObject json, String path) {
 		if (JSONPath.contains(json, path)) {
 			return (String) JSONPath.eval(json, path);
@@ -107,6 +110,11 @@ public class JsonUtils {
 	public static Map<String, ?> bean2map(Object bean) throws Exception {
 		String jsonStr = JSON.toJSONString(bean);
 		return JSON.parseObject(jsonStr, Map.class);
+	}
+	@SuppressWarnings("unchecked")
+	public static Map<String, String> bean2StrMap(Object bean) throws Exception {
+		String jsonStr = JSON.toJSONString(bean);
+		return  JSON.parseObject(jsonStr, Map.class);
 	}
 	
 	@SuppressWarnings("unchecked")

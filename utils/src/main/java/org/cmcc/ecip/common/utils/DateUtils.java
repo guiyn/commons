@@ -20,7 +20,8 @@ public class DateUtils
 	 */
 	public static final SimpleDateFormat millisecondDateFormat = new SimpleDateFormat("yyyyMMddHHmmss.SSS");
 	public static final SimpleDateFormat DBDateFormat = new SimpleDateFormat("yyyyMMddHHmmss.SSS");
-
+	public static final SimpleDateFormat MysqlDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	
 	public static final String DAYS = "0";
 	public static final String HOURS = "1";
 	public static final String MINUTES = "2";
@@ -146,6 +147,10 @@ public class DateUtils
 		return cal.getTime();
 	}
 	public static long currentTimeSecound() {
-		return System.currentTimeMillis()/1000;
+		return  currentTimeMillis()/1000;
+	}
+	
+	public static long currentTimeMillis() {
+		return System.currentTimeMillis();
 	}
 }
