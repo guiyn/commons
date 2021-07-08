@@ -1,8 +1,9 @@
 package org.cmcc.ecip.common.utils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+ 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
@@ -50,6 +51,18 @@ public class JsonUtils {
 		return JSON.parseObject(json, clazz);
 	}
 
+	
+	public static <V> Map<String,V>  format2MapBean(String json, Class<V> clazz) {
+		Map<String, ?> ac = JSONObject.parseObject(json, Map.class);
+		Map<String, V> acs=new HashMap<>();
+		for(String key:ac.keySet()) {
+			JSONObject act=	(JSONObject)ac.get(key);
+			V aaaa= act.toJavaObject(clazz);
+			acs.put(key, aaaa);
+		}
+		return acs;
+	}
+	
 	/**
 	 * 
 	 * @param text
@@ -118,7 +131,7 @@ public class JsonUtils {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static Map<String,String> format2map(String strjson) throws Exception {
+	public static Map<String,String> format2map(String strjson)   {
 		return  JSON.parseObject(strjson, Map.class);
 	}
 
