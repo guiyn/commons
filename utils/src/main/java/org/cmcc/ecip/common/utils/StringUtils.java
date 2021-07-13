@@ -40,8 +40,7 @@ public class StringUtils {
 	public static String getJsonString(Object object) {
 		return (object == null || "".equals(object.toString())) ? "\"\"" : "\"" + object.toString() + "\"";
 	}
-	
-	
+
 	public static String generateRandomString(int length) {
 		String allChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		StringBuffer sb = new StringBuffer();
@@ -52,24 +51,26 @@ public class StringUtils {
 		return sb.toString();
 
 	}
-	
+
 	public static String replaceBlank(String old) {
 		Pattern p = Pattern.compile("\t|\r|\n");
 		Matcher m = p.matcher(old);
 		String after = m.replaceAll("");
 		return after;
 	}
-	
-    public static boolean isBlank(String str) {
-        int strLen;
-        if (str == null || (strLen = str.length()) == 0) {
-            return true;
-        }
-        for (int i = 0; i < strLen; i++) {
-            if ((Character.isWhitespace(str.charAt(i)) == false)) {
-                return false;
-            }
-        }
-        return true;
-    }
+
+	public static boolean isBlank(String str) {
+		int strLen;
+		if (str == null || (strLen = str.length()) == 0) {
+			return true;
+		}
+		for (int i = 0; i < strLen; i++) {
+			if ((Character.isWhitespace(str.charAt(i)) == false)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+ 
 }

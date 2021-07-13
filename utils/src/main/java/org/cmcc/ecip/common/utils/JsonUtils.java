@@ -3,10 +3,11 @@ package org.cmcc.ecip.common.utils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
- 
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
+import com.alibaba.fastjson.serializer.ValueFilter;
 
 /**
  * JSON Util bu ailibaba JSON
@@ -38,6 +39,18 @@ public class JsonUtils {
 		return JSON.toJSONString(obj);
 	}
 
+	public static String formatJsonStrIncludeNullKey(Object obj) {
+		if (obj == null)
+			return "";
+		ValueFilter filter = (obj1, s, v) -> {
+			if (v == null) {
+				return "";
+			}
+			return v;
+		};
+		return JSON.toJSONString(obj, filter);
+	}
+
 	/**
 	 * Json 转java bean
 	 * 
@@ -46,23 +59,22 @@ public class JsonUtils {
 	 * @return
 	 */
 	public static <T> T format2Bean(String json, Class<T> clazz) {
-		if(StringUtils.isNull(json))
+		if (StringUtils.isNull(json))
 			return null;
 		return JSON.parseObject(json, clazz);
 	}
 
-	
-	public static <V> Map<String,V>  format2MapBean(String json, Class<V> clazz) {
+	public static <V> Map<String, V> format2MapBean(String json, Class<V> clazz) {
 		Map<String, ?> ac = JSONObject.parseObject(json, Map.class);
-		Map<String, V> acs=new HashMap<>();
-		for(String key:ac.keySet()) {
-			JSONObject act=	(JSONObject)ac.get(key);
-			V aaaa= act.toJavaObject(clazz);
+		Map<String, V> acs = new HashMap<>();
+		for (String key : ac.keySet()) {
+			JSONObject act = (JSONObject) ac.get(key);
+			V aaaa = act.toJavaObject(clazz);
 			acs.put(key, aaaa);
 		}
 		return acs;
 	}
-	
+
 	/**
 	 * 
 	 * @param text
@@ -72,10 +84,7 @@ public class JsonUtils {
 	public static <T> List<T> format2Array(String text, Class<T> clazz) {
 		return JSON.parseArray(text, clazz);
 	}
-	
- 
-	
-	
+
 	private static String getValue(JSONObject json, String path) {
 		if (JSONPath.contains(json, path)) {
 			return (String) JSONPath.eval(json, path);
@@ -110,8 +119,7 @@ public class JsonUtils {
 	public static boolean contains(JSONObject result, String path) {
 		return JSONPath.contains(result, path);
 	}
-	
-	
+
 	public static <T> T map2bean(Map<String, ?> map, Class<T> beanType) throws Exception {
 
 		String jsonString = JSON.toJSONString(map);
@@ -124,15 +132,16 @@ public class JsonUtils {
 		String jsonStr = JSON.toJSONString(bean);
 		return JSON.parseObject(jsonStr, Map.class);
 	}
+
 	@SuppressWarnings("unchecked")
 	public static Map<String, String> bean2StrMap(Object bean) throws Exception {
 		String jsonStr = JSON.toJSONString(bean);
-		return  JSON.parseObject(jsonStr, Map.class);
+		return JSON.parseObject(jsonStr, Map.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static Map<String,String> format2map(String strjson)   {
-		return  JSON.parseObject(strjson, Map.class);
+	public static Map<String, String> format2map(String strjson) {
+		return JSON.parseObject(strjson, Map.class);
 	}
 
 	public static <T> List<T> listMap2beans(List<Map<String, ?>> list, Class<T> beanType) throws Exception {
