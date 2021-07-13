@@ -40,8 +40,7 @@ import org.cmcc.ecip.common.eos.crypto.ec.EosPublicKey;
 import java.math.BigInteger;
 
 
-/**
-d */
+
 
 public class CryptUtil {
 
