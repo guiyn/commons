@@ -7,6 +7,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
+import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.ValueFilter;
 
 /**
@@ -39,6 +40,23 @@ public class JsonUtils {
 		return JSON.toJSONString(obj);
 	}
 
+	
+	
+	public static String formatJsonStr(Object obj,SerializeFilter filter) {
+		if (obj == null)
+			return "";
+		return JSON.toJSONString(obj,filter);
+	}
+	
+	
+	public static String formatJsonStr(Object obj,SerializeFilter ... filter) {
+		if (obj == null)
+			return "";
+		
+		return JSON.toJSONString(obj,filter);
+	}
+	
+	
 	public static String formatJsonStrIncludeNullKey(Object obj) {
 		if (obj == null)
 			return "";
