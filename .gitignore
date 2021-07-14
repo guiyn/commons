@@ -1,9 +1,4 @@
 /target/
-
-.classpath
-.gitigonre
-.project
+*.classpath
+*.project
 /.settings/
-/bin/
-*.class
-*.jar

@@ -14,6 +14,7 @@
 		<module>utils</module>
 		<module>eos.client</module>
 		<module>tw</module>
+		<module>examples</module>
 	</modules>
 
 	<properties>
@@ -26,7 +27,7 @@
 	</properties>
 
 	<dependencies>
-
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
