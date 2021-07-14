@@ -1,4 +1,4 @@
-package org.cmcc.ecip.common.tw.model;
+package org.cmcc.ecip.tw.common.model;
 
 
 public class CmccCert {

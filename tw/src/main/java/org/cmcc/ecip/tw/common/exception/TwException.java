@@ -1,4 +1,4 @@
-package org.cmcc.ecip.common.tw.util;
+package org.cmcc.ecip.tw.common.exception;
 
 /**
  * @ProjectName R-twcmcc
@@ -27,7 +27,7 @@ public class TwException extends Exception {
 	public final static String error_cipher_execute="09";
 	public final static String error_not_fand_by_nodeid="10";
 	public final static String error_cert_null="11";
-	
+	public final static String error_private_key ="12";
 	public final static String error_unknow="99";
 	
 	public final static String START_ERROR_CODE="00020";

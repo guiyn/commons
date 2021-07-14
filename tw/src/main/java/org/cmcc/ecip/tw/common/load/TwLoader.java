@@ -1,6 +1,6 @@
-package org.cmcc.ecip.common.tw.load;
+package org.cmcc.ecip.tw.common.load;
 
-import org.cmcc.ecip.common.tw.util.TwException;
+import org.cmcc.ecip.tw.common.exception.TwException;
 
 /**   
 * @ProjectName tw.api

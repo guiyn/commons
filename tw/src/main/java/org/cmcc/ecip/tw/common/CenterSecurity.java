@@ -3,7 +3,7 @@
 // Decompiler options: packimports(3) fieldsfirst ansi 
 // Source File Name:   CenterSecurity.java
 
-package org.cmcc.ecip.common.tw;
+package org.cmcc.ecip.tw.common;
 
 import com.trustwork.crypto.digests.SHA1Digest;
 import com.trustwork.crypto.engines.IDEAEngine;
@@ -25,10 +25,10 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.cmcc.ecip.common.tw.cache.CertsTable;
-import org.cmcc.ecip.common.tw.service.PublicSecurity;
-import org.cmcc.ecip.common.tw.util.StringUtils;
-import org.cmcc.ecip.common.tw.util.TwException;
+import org.cmcc.ecip.tw.common.cache.CertsTable;
+import org.cmcc.ecip.tw.common.exception.TwException;
+import org.cmcc.ecip.tw.common.service.PublicSecurity;
+import org.cmcc.ecip.tw.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

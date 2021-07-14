@@ -1,4 +1,4 @@
-package org.cmcc.ecip.common.tw.util;
+package org.cmcc.ecip.tw.common.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

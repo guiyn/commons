@@ -10,10 +10,10 @@ app:
 ######智能合约地址#####
 eos:
    chain:
-      url: 117.134.46.50:443
-      account: cmpaastokens
-      scope: cmpaastokens
-      actor: cmpaastokens
+      url: http://s1.hpe.net.cn:8900
+      account: cmccxhzwinfo
+      scope: cmccxhzwinfo
+      actor: cmccxhzwinfo
       table: tokens
       permission: default
    wallet:

@@ -1,4 +1,4 @@
-package org.cmcc.ecip.common.tw;
+package org.cmcc.ecip.tw.common;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -8,7 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.RMIClientSocketFactory;
 
-import org.cmcc.ecip.common.tw.util.TwException;
+import org.cmcc.ecip.tw.common.exception.TwException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -36,7 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- 
 
 import com.alibaba.fastjson.JSON;
 
@@ -159,16 +158,14 @@ public class ChainBusinessService {
 		}
 		// unlock wallet
 		try {
-			if(!StringUtils.isTrimEmpty(wallet.getPass())) {
+			if (!StringUtils.isTrimEmpty(wallet.getPass())) {
 				log.debug("wallet unlock..");
 				String result = walletService.unlockWallet(wallet.getName(), wallet.getPass());
 				log.debug("wallet unlock result : " + result);
-			}
-			else
-			{
+			} else {
 				log.debug("wallet  pass is null .not. unlock");
 			}
-			
+
 		} catch (Exception e) {
 			log.warn("wallet unlock error : " + e.getMessage());
 		}
@@ -314,6 +311,7 @@ public class ChainBusinessService {
 		log.info("abiJsonToBin >> " + data);
 		return data;
 	}
+
 	public AbiJsonToBin buildBinDataByMap(List<Map> list, String chainAccount, String action) {
 		// build push bin data
 		Map<String, Object> args = new HashMap<>(4);
@@ -323,7 +321,7 @@ public class ChainBusinessService {
 		log.info("abiJsonToBin >> " + data);
 		return data;
 	}
-	
+
 	public AbiJsonToBin buildBinData(String key, Object o, String chainAccount, String action) {
 		// build push bin data
 		Map<String, Object> args = new HashMap<>(4);
@@ -345,11 +343,16 @@ public class ChainBusinessService {
 	}
 
 	public AbiJsonToBin buildBinData(Map<String, Object> args, String chainAccount, String action) {
+		try {
+			args.put("account", chainAccount);
+			AbiJsonToBin data = chainService.abiJsonToBin(chainAccount, action, args);
+			log.info("abiJsonToBin >> " + data);
+			return data;
+		} catch (ChainApiException e) {
+			log.error(e.getMessage()+""+e.getEosError() );
+			throw e;
+		}
 
-		args.put("account", chainAccount);
-		AbiJsonToBin data = chainService.abiJsonToBin(chainAccount, action, args);
-		log.info("abiJsonToBin >> " + data);
-		return data;
 	}
 
 	public AbiJsonToBin buildBinData(Map<String, Object> args, String action) {

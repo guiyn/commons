@@ -1,15 +1,15 @@
-package org.cmcc.ecip.common.tw.cache;
+package org.cmcc.ecip.tw.common.cache;
 
 import java.util.Enumeration;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.cmcc.ecip.common.tw.model.CmccCert;
-import org.cmcc.ecip.common.tw.model.SelfCert;
-import org.cmcc.ecip.common.tw.util.Consts;
-import org.cmcc.ecip.common.tw.util.StringUtils;
-import org.cmcc.ecip.common.tw.util.TwException;
+import org.cmcc.ecip.tw.common.exception.TwException;
+import org.cmcc.ecip.tw.common.model.CmccCert;
+import org.cmcc.ecip.tw.common.model.SelfCert;
+import org.cmcc.ecip.tw.common.util.Consts;
+import org.cmcc.ecip.tw.common.util.StringUtils;
 
 //import org.cmcc.ecip.R.util.StringUtil;
 //import org.cmcc.ecip.tw.util.Consts;

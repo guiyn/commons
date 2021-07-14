@@ -1,4 +1,4 @@
-package org.cmcc.ecip.chain.api;
+package org.cmcc.ecip;
 
 
 import org.cmcc.ecip.common.eos.client.conf.GlobalFeignConfiguration;

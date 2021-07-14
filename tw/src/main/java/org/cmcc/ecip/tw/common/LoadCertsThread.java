@@ -1,6 +1,6 @@
-package org.cmcc.ecip.common.tw;
+package org.cmcc.ecip.tw.common;
 
-import org.cmcc.ecip.common.tw.load.TwLoader;
+import org.cmcc.ecip.tw.common.load.TwLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

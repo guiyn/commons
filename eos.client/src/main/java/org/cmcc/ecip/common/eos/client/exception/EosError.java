@@ -35,4 +35,10 @@ public class EosError {
 	public void setDetails(List<?> details) {
 		this.details = details;
 	}
+	@Override
+	public String toString() {
+		return "EosError [code=" + code + ", name=" + name + ", what=" + what + ", details=" + details + "]";
+	}
+	
+	
 }

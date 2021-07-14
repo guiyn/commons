@@ -1,4 +1,4 @@
-package org.cmcc.ecip.common.tw.util;
+package org.cmcc.ecip.tw.common.util;
 
 /**
  * @ProjectName tw.api

@@ -3,7 +3,7 @@
 // Decompiler options: packimports(3) fieldsfirst ansi 
 // Source File Name:   PublicSecurity.java
 
-package org.cmcc.ecip.common.tw.service;
+package org.cmcc.ecip.tw.common.service;
 
 
 

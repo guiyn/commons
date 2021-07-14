@@ -1,13 +1,13 @@
-package org.cmcc.ecip.common.tw.load;
+package org.cmcc.ecip.tw.common.load;
 
 
 import java.util.List;
 
-import org.cmcc.ecip.common.tw.cache.CertsTable;
-import org.cmcc.ecip.common.tw.model.CmccCert;
-import org.cmcc.ecip.common.tw.util.StringUtils;
-import org.cmcc.ecip.common.tw.util.TwException;
 import org.cmcc.ecip.common.utils.urlConnection.UrlConnectionGet;
+import org.cmcc.ecip.tw.common.cache.CertsTable;
+import org.cmcc.ecip.tw.common.exception.TwException;
+import org.cmcc.ecip.tw.common.model.CmccCert;
+import org.cmcc.ecip.tw.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
