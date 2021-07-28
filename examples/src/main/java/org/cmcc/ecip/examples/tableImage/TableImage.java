@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
- 
+
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -31,7 +31,7 @@ public class TableImage {
 	Font BOlD_font = new Font("微软雅黑", Font.BOLD, fontTitileSize);
 	Font PLAIN_font = new Font("微软雅黑", Font.PLAIN, fontTitileSize);
 
-	public BufferedImage createTable(List<List<String>> data, List<String> columnsName, String title) {
+	public BufferedImage createTable(List<List<String>> data, List<String> columnsName, String title, Draw draw) {
 
 		// 横线的行数 [需要画多少条横线]
 		int totalrow = data.size() + 2;
@@ -76,6 +76,7 @@ public class TableImage {
 			colwidth = colswidth[j] * fontwide;
 
 			String value = columnsName.get(j);
+
 			graphics.drawString(value, x1 + 5, startHeight + rowheight * 2 - 5);
 			x2 = x2 + colwidth;
 			graphics.drawLine(x2, startHeight + rowheight, x2, startHeight + rowheight * 2);
@@ -85,7 +86,7 @@ public class TableImage {
 		graphics.drawLine(startWidth, startHeight + 2 * rowheight, imageWidth - startWidth,
 				startHeight + 2 * rowheight);
 		// 数据内容
-
+		graphics.setFont(PLAIN_font);
 		for (int row = 0; row < data.size(); row++) {
 			List<String> rowData = data.get(row);
 
@@ -94,19 +95,28 @@ public class TableImage {
 			for (int col = 0; col < columnsName.size(); col++) {
 				String colData = rowData.get(col);
 				colwidth = colswidth[col] * fontwide;
-				graphics.drawString(colData, x1 + 5, startHeight + rowheight * (3 + row) - 5);
+
+				draw.draw(row, col, graphics, colData, x1 + 5, startHeight + rowheight * (3 + row) - 5);
+
+//				graphics.drawString(colData, x1 + 5, startHeight + rowheight * (3 + row) - 5);
+				x1 = x1 + colwidth;
 				x2 = x2 + colwidth;
 				graphics.drawLine(x2, startHeight + rowheight * (2 + row), x2, startHeight + rowheight * (3 + row));
-				x1 = x1 + colwidth;
-			}
 
+			}
+			// 一行数据完成加一条线
 			graphics.drawLine(startWidth, startHeight + (row + 3) * rowheight, imageWidth - startWidth,
 					startHeight + (row + 3) * rowheight);
 		}
-
+		// 数据全部写完。将最左边的线加上
 		graphics.drawLine(startHeight, startWidth + rowheight, startHeight, startWidth + rowheight * totalrow);
 
 		return image;
+	}
+
+	public BufferedImage createTable(List<List<String>> data, List<String> columnsName, String title) {
+
+		return createTable(data, columnsName, title, new DrawString());
 	}
 
 	public int getColwidth(List<String> cols) {
