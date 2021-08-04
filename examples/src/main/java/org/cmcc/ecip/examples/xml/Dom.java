@@ -58,7 +58,7 @@ public class Dom {
 		// 2.创建DocumentBuilder对象
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document d = builder.parse(new ByteArrayInputStream(xml3.getBytes()));
+			Document d = builder.parse(new ByteArrayInputStream(xml4.getBytes()));
 			renshiNodeType(d.getChildNodes());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,12 +70,12 @@ public class Dom {
 	public static void renshiNodeType(NodeList list) {
 		for (int i = 0; i < list.getLength(); i++) {
 //			DeferredElementImpl
+			log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 			Node _n = list.item(i);
 			log.info("base uri "+_n.getBaseURI());
 			log.info("local name "+_n.getLocalName());
 			log.info("namespace uri "+_n.getNamespaceURI());
 			log.info("prefix "+_n.getPrefix());
-			
 			log.info("node >> {} {} {} {}", _n.getNodeType(), _n.getNodeName(), _n.getNodeValue(),_n.getLocalName());
 			NamedNodeMap map = _n.getAttributes();
 			for (int j = 0; map != null && j < map.getLength(); j++) {
@@ -103,4 +103,22 @@ public class Dom {
 			"<a1><![CDATA[<s>sss</s>]]>ssss</a1>" + 
 			"</root>" + 
 			"";
+	
+	static String xml4="<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n" + 
+			
+				"<env:Header/>\r\n" +
+				"<env:Body>\r\n" +
+				"  <Ack xmlns=\"http://www.npac.gov.cn/NumberPortable/npMessage\">\r\n" +
+				"   <MessageID xmlns=\"\">0008170680100300</MessageID>\r\n" +
+				"   <CommandCode xmlns=\"\">ACK</CommandCode>\r\n" + 
+				 
+				"   <ResponseCode xmlns=\"\">100</ResponseCode>\r\n" + 
+				 
+				"   <ErrorMessage xmlns=\"\">OK</ErrorMessage>\r\n" + 
+				 
+				"  </Ack>\r\n" + 
+				 
+				"</env:Body>\r\n" + 
+				 
+				"</env:Envelope>";
 }

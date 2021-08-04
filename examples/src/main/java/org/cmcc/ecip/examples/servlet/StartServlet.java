@@ -22,7 +22,7 @@ public class StartServlet {
 	@RequestMapping(value = "/status", method = RequestMethod.GET)
 	@ResponseBody
 	String isRunning() {
-		log.info("......" + System.currentTimeMillis());
+		log.debug("......" + System.currentTimeMillis());
 		return "is running " + System.currentTimeMillis();
 	}
 }

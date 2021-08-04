@@ -30,7 +30,10 @@ public class UploadClient {
 				" hello word..".getBytes());
 		
 		request.setHeader("Connection", "close");
-		sender(request);
+		HttpResponse response =		sender(request);
+
+		
+		System.out.println(response.getEntity().getContentLength() );
 	}
 
 	static HttpResponse sender(HttpRequest request) throws Exception {

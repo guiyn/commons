@@ -11,19 +11,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @Slf4j
-@WebServlet(urlPatterns = "/upload")
 public class UpLoadServer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@RequestMapping(value = "/upload", method = RequestMethod.GET)
+	@ResponseBody
+	public void doget(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		resp.getWriter().write(" hello..."+System.currentTimeMillis());
+	}
+	
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		MultipartResolver resolver = new CommonsMultipartResolver(req.getSession().getServletContext());
 		MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(req);
@@ -47,7 +58,7 @@ public class UpLoadServer extends HttpServlet {
 			log.info(base64file);
 			log.info("attr>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ");
 		}
-
+		resp.getWriter().write("hello you upload file  is get...");
 	}
 	
 	
