@@ -8,12 +8,11 @@
 		<version>0.1-release</version>
 	</parent>
 	<artifactId>tw</artifactId>
-
 	<dependencies>
 		<dependency>
-			<groupId>cmcc.ecip.R</groupId>
-			<artifactId>cmcctrustwork140</artifactId>
-			<version>1.40</version>
+		<groupId>cmcc.ecip</groupId>
+		<artifactId>trustwork140</artifactId>
+		<version>1</version>
 		</dependency>
 		<dependency>
 			<groupId>cmcc.ecip.common</groupId>
