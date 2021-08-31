@@ -8,7 +8,7 @@ public class LogClassOfCallerConverter  extends NamedConverter {
 
 	
 	  protected String getFullyQualifiedName(ILoggingEvent event) {
-
+		  
 	        StackTraceElement[] cda = event.getCallerData();
 	        if (cda != null && cda.length > 1) {
 	            return cda[1].getClassName()+"|"+cda[1].getMethodName()+"|"+Integer.toString(cda[1].getLineNumber());
