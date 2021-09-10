@@ -68,9 +68,15 @@ public class EosChainService {
 			requestParameters.put("upper_bound", upper_bound);
 		if (!StringUtils.isEmpty(reverse))
 			requestParameters.put("reverse", reverse);
-		return eosChainApiClient.getTableRows(requestParameters);
+ 
+		return getTableRows(requestParameters);
 	}
 
+	public TableRow getTableRows(Map<String, Object> requestParameters) {
+		 
+		return eosChainApiClient.getTableRows(requestParameters);
+	}
+	
 	public TableRow getTableRows(String scope, String code, String table, Integer limit, String lower_bound,
 			String upper_bound) {
 

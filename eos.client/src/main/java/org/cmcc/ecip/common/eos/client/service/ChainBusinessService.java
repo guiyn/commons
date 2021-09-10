@@ -48,7 +48,7 @@ public class ChainBusinessService {
 	final static String save_action = "save";
 	static final String GMT_ID = "GMT";
 
-	static final int push_expiration = 60;
+	static final int push_expiration = 10;
 
 	@Autowired
 	EosChainService chainService;
@@ -152,7 +152,7 @@ public class ChainBusinessService {
 			boolean checkLastBlockNum, boolean checkBlockData, String action, AbiJsonToBin data)
 			throws ChainApiException {
 
-		if (expiration_time < 60) {
+		if (expiration_time < push_expiration) {
 			log.warn("expiration_time has error expiration_time mast greater than 10 .. set expiration_time is 10 ");
 			expiration_time = push_expiration;
 		}
@@ -208,7 +208,8 @@ public class ChainBusinessService {
 		PackedTransaction packedTransaction = new PackedTransaction();
 		packedTransaction.setRef_block_prefix(block.getRef_block_prefix());
 		packedTransaction.setRef_block_num(block.getBlockNum());
-		String expiration = ZonedDateTime.now(ZoneId.of(GMT_ID)).plusMinutes(expiration_time)
+		String expiration = ZonedDateTime.now(ZoneId.of(GMT_ID)).
+				plusMinutes(expiration_time)
 				.truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 		packedTransaction.setExpiration(expiration);
 		packedTransaction.setRegion("0");
