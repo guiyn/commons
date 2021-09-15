@@ -84,11 +84,18 @@
 			<artifactId>jaudiotagger</artifactId>
 			<version>2.0.3</version>
 		</dependency>
-	<dependency>
+		<dependency>
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
 			<version>1.7</version>
 		</dependency>
+
+		<dependency>
+			<groupId>cmcc.ecip.common</groupId>
+			<artifactId>tw</artifactId>
+			<version>0.1-release</version>
+		</dependency>
+
 	</dependencies>
 
 
