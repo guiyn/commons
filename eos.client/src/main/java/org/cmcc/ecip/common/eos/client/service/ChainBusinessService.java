@@ -269,7 +269,7 @@ public class ChainBusinessService {
 				log.error("thread sleep error..");
 			}
 			ChainInfo c = chainService.getChainInfo();
-			log.info("get last irreversible block num from chainInfo >> {}", c.getLastIrreversibleBlockNum());
+			log.info("[{}]begin check... get last irreversible block num from chainInfo >> {}",i, c.getLastIrreversibleBlockNum());
 			if (c.getLastIrreversibleBlockNum() >= result_block_num) {
 				if (!checkBlockData) {
 					return true;
@@ -278,12 +278,16 @@ public class ChainBusinessService {
 				try {
 					if (checkBlockTransactionId(result_block_num, transactionId))
 						return true;
+					else
+						log.warn("transactionId {} not in result_nlock_num {}", transactionId ,result_block_num);		
 				} catch (ChainApiException e) {
 					log.warn(e.getMessage());
 				}
 				if (checkBlockTransactionId(result_block_num + 1, transactionId))
 					return true;
-
+				else
+					log.warn("transactionId {} not in result_nlock_num {}", transactionId ,(result_block_num+1));	
+				
 			} else {
 				log.warn(
 						"chain consensus has waring..push transaction result block num is {} ; but current chain block num is {}",
